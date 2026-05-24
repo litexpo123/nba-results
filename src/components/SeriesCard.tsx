@@ -2,8 +2,10 @@ import type { SeriesConfig } from '@/config/series';
 import { useSeriesGames } from '@/hooks/useSeriesGames';
 
 import { Card, CardContent } from './ui/card';
+import { ErrorMessage } from './ErrorMessage';
 import { GameRow } from './GameRow';
 import { MatchupHero } from './MatchupHero';
+import { Spinner } from './Spinner';
 
 type SeriesCardProps = {
   series: SeriesConfig;
@@ -15,8 +17,8 @@ export function SeriesCard({ series }: SeriesCardProps) {
   if (isLoading) {
     return (
       <Card>
-        <CardContent className="py-10 text-center text-sm text-muted-foreground">
-          Loading {series.label}…
+        <CardContent className="p-6">
+          <Spinner label={`Loading ${series.label}`} />
         </CardContent>
       </Card>
     );
@@ -25,8 +27,8 @@ export function SeriesCard({ series }: SeriesCardProps) {
   if (isError || !data) {
     return (
       <Card>
-        <CardContent className="py-10 text-center text-sm text-destructive">
-          Couldn't load {series.label}.
+        <CardContent className="p-6">
+          <ErrorMessage message="Couldn't load games" />
         </CardContent>
       </Card>
     );

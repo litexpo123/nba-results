@@ -2,9 +2,11 @@ import type { Game } from '@/lib/espnClient';
 import { useGameSummary } from '@/hooks/useGameSummary';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
-import { TopScorerHero } from './TopScorerHero';
+import { ErrorMessage } from './ErrorMessage';
 import { LineScore } from './LineScore';
 import { PlayerStatsTable } from './PlayerStatsTable';
+import { Spinner } from './Spinner';
+import { TopScorerHero } from './TopScorerHero';
 
 type BoxScoreDialogProps = {
   game: Game;
@@ -25,14 +27,8 @@ export function BoxScoreDialog({ game, open, onOpenChange }: BoxScoreDialogProps
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
-        {isLoading ? (
-          <div className="py-10 text-center text-sm text-muted-foreground">Loading box score…</div>
-        ) : null}
-        {isError || (!isLoading && !data) ? (
-          <div className="py-10 text-center text-sm text-destructive">
-            Couldn't load box score.
-          </div>
-        ) : null}
+        {isLoading ? <Spinner label="Loading box score" /> : null}
+        {isError ? <ErrorMessage message="Couldn't load box score" /> : null}
         {data ? (
           <div className="space-y-6">
             <TopScorerHero topScorer={data.topScorer} />
