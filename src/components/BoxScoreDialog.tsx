@@ -3,6 +3,7 @@ import { useGameSummary } from '@/hooks/useGameSummary';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { ErrorMessage } from './ErrorMessage';
+import { HighlightSlot } from './HighlightSlot';
 import { LineScore } from './LineScore';
 import { PlayerStatsTable } from './PlayerStatsTable';
 import { Spinner } from './Spinner';
@@ -12,9 +13,10 @@ type BoxScoreDialogProps = {
   game: Game;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  youtubeSearchUrl: string;
 };
 
-export function BoxScoreDialog({ game, open, onOpenChange }: BoxScoreDialogProps) {
+export function BoxScoreDialog({ game, open, onOpenChange, youtubeSearchUrl }: BoxScoreDialogProps) {
   const { data, isLoading, isError } = useGameSummary(game.id, open);
 
   const title = `${game.away.shortDisplayName || game.away.abbreviation} @ ${
@@ -32,6 +34,7 @@ export function BoxScoreDialog({ game, open, onOpenChange }: BoxScoreDialogProps
         {data ? (
           <div className="space-y-6">
             <TopScorerHero topScorer={data.topScorer} />
+            <HighlightSlot searchUrl={youtubeSearchUrl} />
             <LineScore teams={data.teams} />
             <div className="space-y-6">
               {data.teams.map((team) => (

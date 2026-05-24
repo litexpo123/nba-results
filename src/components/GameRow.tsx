@@ -11,6 +11,7 @@ import { TeamLogo } from './TeamLogo';
 
 type GameRowProps = {
   game: Game;
+  youtubeSearchUrl: string;
 };
 
 type TeamRowProps = {
@@ -41,7 +42,7 @@ function TeamRow({ side, isFinal }: TeamRowProps) {
   );
 }
 
-export function GameRow({ game }: GameRowProps) {
+export function GameRow({ game, youtubeSearchUrl }: GameRowProps) {
   const state = classifyGame(game);
   const isFinal = state === 'final';
   const isScheduled = state === 'scheduled';
@@ -76,7 +77,12 @@ export function GameRow({ game }: GameRowProps) {
         >
           {body}
         </button>
-        <BoxScoreDialog game={game} open={open} onOpenChange={setOpen} />
+        <BoxScoreDialog
+          game={game}
+          open={open}
+          onOpenChange={setOpen}
+          youtubeSearchUrl={youtubeSearchUrl}
+        />
       </>
     );
   }

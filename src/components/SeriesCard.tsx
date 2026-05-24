@@ -1,5 +1,6 @@
 import type { SeriesConfig } from '@/config/series';
 import { useSeriesGames } from '@/hooks/useSeriesGames';
+import { buildYoutubeSearchUrl } from '@/lib/youtubeSearch';
 
 import { Card, CardContent } from './ui/card';
 import { ErrorMessage } from './ErrorMessage';
@@ -50,9 +51,13 @@ export function SeriesCard({ series }: SeriesCardProps) {
       <MatchupHero teamA={series.teamA} teamB={series.teamB} games={data} />
       <CardContent>
         <div className="flex flex-col gap-3">
-          {data.map((game) => (
-            <GameRow key={game.id} game={game} />
-          ))}
+          {data.map((game, index) => {
+            const gameNumber = index + 1;
+            const youtubeSearchUrl = buildYoutubeSearchUrl(game, gameNumber);
+            return (
+              <GameRow key={game.id} game={game} youtubeSearchUrl={youtubeSearchUrl} />
+            );
+          })}
         </div>
       </CardContent>
     </Card>
