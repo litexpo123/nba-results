@@ -1,9 +1,12 @@
+import { useState } from 'react';
+
 import type { Game, TeamSide } from '@/lib/espnClient';
 import { formatGameStart } from '@/lib/dateFormatter';
 import { classifyGame } from '@/lib/gameStateClassifier';
 import { getTeamColors } from '@/lib/teamColors';
 import { cn } from '@/lib/utils';
 
+import { BoxScoreDialog } from './BoxScoreDialog';
 import { TeamLogo } from './TeamLogo';
 
 type GameRowProps = {
@@ -42,9 +45,10 @@ export function GameRow({ game }: GameRowProps) {
   const state = classifyGame(game);
   const isFinal = state === 'final';
   const isScheduled = state === 'scheduled';
+  const [open, setOpen] = useState(false);
 
-  return (
-    <div className={cn('rounded-md border bg-card', isScheduled && 'opacity-60')}>
+  const body = (
+    <>
       <TeamRow side={game.away} isFinal={isFinal} />
       <div className="border-t" />
       <TeamRow side={game.home} isFinal={isFinal} />
@@ -58,6 +62,26 @@ export function GameRow({ game }: GameRowProps) {
           {game.status.detail ?? 'In progress'}
         </div>
       ) : null}
-    </div>
+    </>
+  );
+
+  if (isFinal) {
+    return (
+      <>
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="w-full overflow-hidden rounded-md border bg-card text-left transition-colors hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          aria-label={`Open box score for ${game.away.shortDisplayName || game.away.abbreviation} at ${game.home.shortDisplayName || game.home.abbreviation}`}
+        >
+          {body}
+        </button>
+        <BoxScoreDialog game={game} open={open} onOpenChange={setOpen} />
+      </>
+    );
+  }
+
+  return (
+    <div className={cn('rounded-md border bg-card', isScheduled && 'opacity-60')}>{body}</div>
   );
 }
