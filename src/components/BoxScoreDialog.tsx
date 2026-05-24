@@ -14,9 +14,16 @@ type BoxScoreDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   youtubeSearchUrl: string;
+  highlightVideoId: string | null;
 };
 
-export function BoxScoreDialog({ game, open, onOpenChange, youtubeSearchUrl }: BoxScoreDialogProps) {
+export function BoxScoreDialog({
+  game,
+  open,
+  onOpenChange,
+  youtubeSearchUrl,
+  highlightVideoId,
+}: BoxScoreDialogProps) {
   const { data, isLoading, isError } = useGameSummary(game.id, open);
 
   const title = `${game.away.shortDisplayName || game.away.abbreviation} @ ${
@@ -34,7 +41,7 @@ export function BoxScoreDialog({ game, open, onOpenChange, youtubeSearchUrl }: B
         {data ? (
           <div className="space-y-6">
             <TopScorerHero topScorer={data.topScorer} />
-            <HighlightSlot searchUrl={youtubeSearchUrl} />
+            <HighlightSlot searchUrl={youtubeSearchUrl} videoId={highlightVideoId} />
             <LineScore teams={data.teams} />
             <div className="space-y-6">
               {data.teams.map((team) => (

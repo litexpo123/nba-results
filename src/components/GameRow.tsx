@@ -12,6 +12,7 @@ import { TeamLogo } from './TeamLogo';
 type GameRowProps = {
   game: Game;
   youtubeSearchUrl: string;
+  highlightVideoId: string | null;
 };
 
 type TeamRowProps = {
@@ -42,7 +43,7 @@ function TeamRow({ side, isFinal }: TeamRowProps) {
   );
 }
 
-export function GameRow({ game, youtubeSearchUrl }: GameRowProps) {
+export function GameRow({ game, youtubeSearchUrl, highlightVideoId }: GameRowProps) {
   const state = classifyGame(game);
   const isFinal = state === 'final';
   const isScheduled = state === 'scheduled';
@@ -82,6 +83,7 @@ export function GameRow({ game, youtubeSearchUrl }: GameRowProps) {
           open={open}
           onOpenChange={setOpen}
           youtubeSearchUrl={youtubeSearchUrl}
+          highlightVideoId={highlightVideoId}
         />
       </>
     );

@@ -54,8 +54,14 @@ export function SeriesCard({ series }: SeriesCardProps) {
           {data.map((game, index) => {
             const gameNumber = index + 1;
             const youtubeSearchUrl = buildYoutubeSearchUrl(game, gameNumber);
+            const highlightVideoId = series.highlights[gameNumber] ?? null;
             return (
-              <GameRow key={game.id} game={game} youtubeSearchUrl={youtubeSearchUrl} />
+              <GameRow
+                key={game.id}
+                game={game}
+                youtubeSearchUrl={youtubeSearchUrl}
+                highlightVideoId={highlightVideoId}
+              />
             );
           })}
         </div>
